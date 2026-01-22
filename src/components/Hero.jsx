@@ -108,7 +108,7 @@ export default function Hero({ heroRef, scrollToSection, downloadCV }) {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone className="h-4 w-4 md:h-5 md:w-5 text-blue-400" />
-                  <span>+94 71 228 7770</span>
+                  <span>+94 71 228 7707</span>
                 </div>
               </div>
             </motion.div>
