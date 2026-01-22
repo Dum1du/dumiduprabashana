@@ -15,14 +15,14 @@ const Footer = ({scrollToSection}) => {
     {
       icon: <Mail className="w-5 h-5" />,
       label: "Email",
-      href: "mailto:dumidu.prabashana@gmail.com",
+      href: "mailto:dumidu.prabashana01@gmail.com",
       color: "group-hover:text-red-400",
       borderColor: "group-hover:border-red-400/30",
     },
     {
       icon: <MessageCircle className="w-5 h-5" />,
       label: "WhatsApp",
-      href: "https://wa.me/94712287770",
+      href: "https://wa.me/94712287707",
       color: "group-hover:text-green-400",
       borderColor: "group-hover:border-green-400/30",
     },
