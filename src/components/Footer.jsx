@@ -1,14 +1,7 @@
 import React from "react";
-import {
-  Mail,
-  MessageCircle,
-  Linkedin,
-  Github,
-  Code,
-  ArrowUp,
-} from "lucide-react";
+import { Mail, MessageCircle, Linkedin, Github, Code, ArrowUp } from "lucide-react";
 
-const Footer = ({scrollToSection}) => {
+const Footer = ({ scrollToSection }) => {
   const currentYear = new Date().getFullYear();
 
   const contactLinks = [
@@ -17,28 +10,24 @@ const Footer = ({scrollToSection}) => {
       label: "Email",
       href: "mailto:dumidu.prabashana@gmail.com",
       color: "group-hover:text-red-400",
-      borderColor: "group-hover:border-red-400/30",
     },
     {
       icon: <MessageCircle className="w-5 h-5" />,
       label: "WhatsApp",
       href: "https://wa.me/94712287770",
       color: "group-hover:text-green-400",
-      borderColor: "group-hover:border-green-400/30",
     },
     {
       icon: <Linkedin className="w-5 h-5" />,
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/dumidu-prabashana-6bab75286/",
       color: "group-hover:text-blue-400",
-      borderColor: "group-hover:border-blue-400/30",
     },
     {
       icon: <Github className="w-5 h-5" />,
       label: "GitHub",
       href: "https://github.com/Dum1du",
       color: "group-hover:text-gray-100",
-      borderColor: "group-hover:border-gray-400/30",
     },
   ];
 
@@ -51,7 +40,7 @@ const Footer = ({scrollToSection}) => {
 
   return (
     <footer className="relative bg-[#030712] text-gray-400 py-12 border-t border-gray-800/60 overflow-hidden">
-      {/* Decorative background glow */}
+      {/* Decorative top glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
 
       <div className="container mx-auto px-6 relative z-10">
@@ -67,28 +56,26 @@ const Footer = ({scrollToSection}) => {
           </p>
         </div>
 
-        {/* Contact Grid - Centered */}
-        <div className="max-w-3xl mx-auto mb-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {contactLinks.map((link, idx) => (
-              <a
-                key={idx}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex flex-col items-center p-6 rounded-2xl bg-gray-900/40 border border-gray-800/50 hover:bg-gray-800/60 hover:border-gray-700 transition-all duration-300"
+        {/* Contact Links */}
+        <div className="max-w-3xl mx-auto mb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {contactLinks.map((link, idx) => (
+            <a
+              key={idx}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center p-6 rounded-2xl bg-gray-900/40 border border-gray-800/50 hover:bg-gray-800/60 transition duration-200"
+            >
+              <div
+                className={`p-4 rounded-xl bg-gray-950 border border-gray-800 transform transition-transform duration-200 group-hover:scale-105 ${link.color}`}
               >
-                <div
-                  className={`p-4 rounded-xl bg-gray-950 border border-gray-800 group-hover:scale-110 transition-transform duration-300 ${link.color}`}
-                >
-                  {link.icon}
-                </div>
-                <span className="mt-4 text-sm font-semibold text-gray-200 group-hover:text-white transition-colors">
-                  {link.label}
-                </span>
-              </a>
-            ))}
-          </div>
+                {link.icon}
+              </div>
+              <span className="mt-4 text-sm font-semibold text-gray-200 group-hover:text-white transition-colors duration-200">
+                {link.label}
+              </span>
+            </a>
+          ))}
         </div>
 
         {/* Brand & Navigation */}
@@ -100,9 +87,7 @@ const Footer = ({scrollToSection}) => {
             </div>
             <div>
               <h3 className="text-xl font-bold text-white">Dumidu Prabashana</h3>
-              <p className="text-sm text-gray-500 mt-1">
-                Software Engineering Student
-              </p>
+              <p className="text-sm text-gray-500 mt-1">Software Engineering Student</p>
             </div>
           </div>
 
@@ -121,7 +106,7 @@ const Footer = ({scrollToSection}) => {
 
           {/* Back to Top */}
           <button
-            onClick={() => window.scrollTo({top:0, behavior:"smooth"})}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors cursor-pointer"
           >
             Back to top
