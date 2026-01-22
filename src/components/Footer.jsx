@@ -120,24 +120,21 @@ const Footer = ({scrollToSection}) => {
           </div>
 
           {/* Back to Top */}
-          <a
-            href="#top"
-            className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors"
+          <button
+            onClick={() => window.scrollTo({top:0, behavior:"smooth"})}
+            className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors cursor-pointer"
           >
             Back to top
             <div className="p-2 rounded-full border border-gray-800 hover:border-gray-600 transition-colors">
               <ArrowUp className="w-3 h-3" />
             </div>
-          </a>
+          </button>
         </div>
 
         {/* Copyright */}
         <div className="pt-6 border-t border-gray-800/50 text-center">
           <p className="text-sm text-gray-500">
             © {currentYear} Dumidu Prabashana. All rights reserved.
-          </p>
-          <p className="text-xs text-gray-600 mt-2">
-            Built with React & Tailwind CSS
           </p>
         </div>
       </div>

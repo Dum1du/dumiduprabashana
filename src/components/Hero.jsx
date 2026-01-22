@@ -127,7 +127,7 @@ export default function Hero({ heroRef, scrollToSection, downloadCV }) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => scrollToSection("projects")}
-                    className="px-4 py-2.5 md:px-6 md:py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl text-sm md:text-base"
+                    className="px-4 py-2.5 md:px-6 md:py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl text-sm md:text-base cursor-pointer"
                   >
                     View My Work
                   </motion.button>
@@ -135,7 +135,7 @@ export default function Hero({ heroRef, scrollToSection, downloadCV }) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={downloadCV}
-                    className="px-4 py-2.5 md:px-6 md:py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800/50 transition-all duration-200 flex items-center text-sm md:text-base"
+                    className="px-4 py-2.5 md:px-6 md:py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-800/50 transition-all duration-200 flex items-center text-sm md:text-base cursor-pointer"
                   >
                     <Download className="h-3 w-3 md:h-4 md:w-4 mr-2" />
                     Download CV

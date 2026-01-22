@@ -24,28 +24,28 @@ export default function Navbar({ isNavOpen, setIsNavOpen, scrollToSection, downl
             <div className="hidden md:flex items-center space-x-6">
               <button
                 onClick={() => scrollToSection("home")}
-                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200"
+                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 cursor-pointer"
               >
                 <Home className="h-4 w-4" />
                 <span>Home</span>
               </button>
               <button
                 onClick={() => scrollToSection("projects")}
-                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200"
+                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 cursor-pointer"
               >
                 <FolderOpen className="h-4 w-4" />
                 <span>Projects</span>
               </button>
               <button
                 onClick={() => scrollToSection("skills")}
-                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200"
+                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 cursor-pointer"
               >
                 <User className="h-4 w-4" />
                 <span>Skills</span>
               </button>
               <button
                 onClick={() => scrollToSection("contact")}
-                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200"
+                className="flex items-center space-x-2 text-gray-300 hover:text-blue-400 transition-colors duration-200 cursor-pointer"
               >
                 <Mail className="h-4 w-4" />
                 <span>Contact</span>
@@ -54,7 +54,7 @@ export default function Navbar({ isNavOpen, setIsNavOpen, scrollToSection, downl
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={downloadCV}
-                className="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-md text-sm sm:text-base"
+                className="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-md text-sm sm:text-base cursor-pointer"
               >
                 <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                 Download CV
