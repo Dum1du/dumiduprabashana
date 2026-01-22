@@ -104,7 +104,7 @@ export default function Hero({ heroRef, scrollToSection, downloadCV }) {
               <div className="flex flex-wrap gap-4 md:gap-6 text-gray-400 text-sm md:text-base">
                 <div className="flex items-center space-x-2">
                   <Mail className="h-4 w-4 md:h-5 md:w-5 text-blue-400" />
-                  <span>dumidu.prabhasan@gmail.com</span>
+                  <span>dumidu.prabashana01@gmail.com</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone className="h-4 w-4 md:h-5 md:w-5 text-blue-400" />
