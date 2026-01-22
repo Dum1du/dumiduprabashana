@@ -1,256 +1,189 @@
-// src/components/NodeNetwork.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 
-const NodeNetwork = () => {
+const BinaryBackground = () => {
+  const [digits, setDigits] = useState([]);
   const containerRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  // Use a Ref for mouse position to handle real-time updates without state lag
+  const mouseRef = useRef({ x: -100, y: -100 });
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Create initial nodes and connections
-  const createNetwork = () => {
-    const nodes = [];
-    const connections = [];
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
 
-    // Create nodes with positions
-    for (let i = 0; i < 100; i++) {
-      nodes.push({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: 2 + Math.random() * 3,
-        baseOpacity: 1 + Math.random() * 0.8,
-        active: false,
-        pulse: Math.random() * Math.PI * 2,
-      });
-    }
+    const generateDigits = () => {
+      const count = isMobile ? 60 : 120;
+      const newDigits = [];
+      
+      for (let i = 0; i < count; i++) {
+        const isOne = Math.random() > 0.5;
+        newDigits.push({
+          id: i,
+          char: isOne ? '1' : '0',
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          size: 12 + Math.random() * 16,
+          opacity: 0.08 + Math.random() * 0.07,
+          delay: Math.random() * 2,
+          hue: Math.random() * 60 + 200,
+          currentOpacity: 0.1, // Initial state
+        });
+      }
+      setDigits(newDigits);
+    };
 
-    // Create connections between nearby nodes
-    nodes.forEach((node1, i) => {
-      nodes.slice(i + 1).forEach((node2, j) => {
-        const dx = node1.x - node2.x;
-        const dy = node1.y - node2.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+    generateDigits();
 
-        if (distance < 100) {
-          // Connect nodes within 25% distance
-          connections.push({
-            id: `${i}-${j}`,
-            x1: node1.x,
-            y1: node1.y,
-            x2: node2.x,
-            y2: node2.y,
-            opacity: 0.1,
-          });
-        }
-      });
-    });
+    const handleResize = () => generateDigits();
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, [isMobile]);
 
-    return { nodes, connections };
-  };
-
-  const [network, setNetwork] = useState(() => createNetwork());
-
+  // Real-time mouse tracking (zero-lag)
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!containerRef.current) return;
-
       const rect = containerRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      setMousePos({ x, y });
+      mouseRef.current = {
+        x: ((e.clientX - rect.left) / rect.width) * 100,
+        y: ((e.clientY - rect.top) / rect.height) * 100,
+      };
     };
 
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("mousemove", handleMouseMove);
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener("mousemove", handleMouseMove);
-      }
-    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Animate nodes and connections
+  // Optimized Animation Loop
   useEffect(() => {
     let animationFrameId;
-
-    const animate = () => {
-      setNetwork((prev) => {
-        const updatedNodes = prev.nodes.map((node) => {
-          // Calculate distance from mouse
-          const dx = mousePos.x - node.x;
-          const dy = mousePos.y - node.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          // Calculate activation based on mouse proximity
-          const activation = Math.max(0, 1 - distance / 15); // 15% activation radius
-
-          // Update pulse
-          const newPulse = (node.pulse + 0.02) % (Math.PI * 2);
-
-          return {
-            ...node,
-            pulse: newPulse,
-            active: activation > 0.1,
-            currentOpacity:
-              activation > 0.1
-                ? Math.min(1, node.baseOpacity + activation * 0.7)
-                : node.baseOpacity * (0.8 + Math.sin(newPulse) * 0.2),
-          };
-        });
-
-        // Update connections based on node states
-        const updatedConnections = prev.connections.map((conn) => {
-          const node1 = updatedNodes.find(
-            (n) =>
-              Math.abs(n.x - conn.x1) < 0.1 && Math.abs(n.y - conn.y1) < 0.1
-          );
-          const node2 = updatedNodes.find(
-            (n) =>
-              Math.abs(n.x - conn.x2) < 0.1 && Math.abs(n.y - conn.y2) < 0.1
-          );
-
-          let opacity = 0.08; // Base opacity
-
-          if (node1?.active || node2?.active) {
-            opacity = 0.3;
-          }
-          if (node1?.active && node2?.active) {
-            opacity = 0.6;
-          }
-
-          return { ...conn, opacity };
-        });
-
-        return { nodes: updatedNodes, connections: updatedConnections };
-      });
-
-      animationFrameId = requestAnimationFrame(animate);
+    
+    const updateDigits = () => {
+      setDigits(prev => prev.map(digit => {
+        const { x, y } = mouseRef.current;
+        const distance = Math.sqrt(Math.pow(digit.x - x, 2) + Math.pow(digit.y - y, 2));
+        
+        const isGlowing = distance < (isMobile ? 12 : 8);
+        const targetOpacity = isGlowing 
+          ? Math.min(0.9, (0.08 + Math.random() * 0.07) * 15)
+          : digit.opacity;
+        
+        // Increased smoothing factor (0.3) for snappier response
+        const newOpacity = digit.currentOpacity + (targetOpacity - digit.currentOpacity) * 0.5;
+        
+        return {
+          ...digit,
+          isGlowing,
+          currentOpacity: newOpacity,
+        };
+      }));
+      
+      animationFrameId = requestAnimationFrame(updateDigits);
     };
-
-    animate();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [mousePos]);
-
-  // Vertical fade effect - more visible at top, fades toward middle
-  const getVerticalOpacity = (y) => {
-    // More visible at top (y = 0), fade out towards middle (y = 50)
-    return Math.max(0.2, 0.8 - y / 50);
-  };
+    
+    animationFrameId = requestAnimationFrame(updateDigits);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isMobile]);
 
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 pointer-events-none z-0"
+      className="absolute inset-0 overflow-hidden z-0 pointer-events-none"
       style={{
-        background:
-          "radial-gradient(ellipse at top, transparent 0%, rgba(0,0,0,0.7) 70%)",
+        background: 'linear-gradient(to bottom right, #0f172a 0%, #1e293b 30%, #0f172a 100%)',
       }}
     >
-      {/* Connection Lines */}
-      <svg className="absolute inset-0 w-full h-full">
-        <defs>
-          <linearGradient
-            id="connectionGradient"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="0%"
+      <div className="absolute inset-0 opacity-30">
+        <div 
+          className="absolute top-0 left-0 w-full h-full"
+          style={{
+            background: 'radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)',
+            animation: 'pulse 20s ease-in-out infinite alternate',
+          }}
+        />
+        <div 
+          className="absolute bottom-0 right-0 w-full h-full"
+          style={{
+            background: 'radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%)',
+            animation: 'pulse 15s ease-in-out infinite alternate-reverse',
+          }}
+        />
+      </div>
+
+      {digits.map((digit) => {
+        const opacity = digit.currentOpacity;
+        const glowEffect = digit.isGlowing
+          ? {
+              filter: `blur(${Math.max(0, 8 - opacity * 8)}px)`,
+              textShadow: `
+                0 0 ${10 + opacity * 20}px hsla(${digit.hue}, 100%, 70%, ${opacity}),
+                0 0 ${20 + opacity * 30}px hsla(${digit.hue}, 100%, 60%, ${opacity * 0.7})
+              `,
+            }
+          : {};
+
+        return (
+          <div
+            key={digit.id}
+            className="absolute font-mono pointer-events-none"
+            style={{
+              left: `${digit.x}%`,
+              top: `${digit.y}%`,
+              transform: 'translate(-50%, -50%)',
+              fontSize: `${digit.size}px`,
+              opacity: opacity,
+              color: digit.isGlowing 
+                ? `hsl(${digit.hue}, 100%, ${70 + opacity * 25}%)`
+                : `hsla(${digit.hue}, 100%, 70%, 0.3)`,
+              fontWeight: digit.isGlowing ? '600' : '300',
+              // We remove transitions when glowing to ensure the JS animation is "Realtime"
+              transition: digit.isGlowing ? 'none' : 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              animation: !digit.isGlowing 
+                ? `float ${6 + digit.delay}s ease-in-out infinite alternate`
+                : 'none',
+              animationDelay: `${digit.delay}s`,
+              zIndex: digit.isGlowing ? 10 : 1,
+              ...glowEffect,
+            }}
           >
-            <stop offset="0%" stopColor="rgba(96, 165, 250, 0.3)" />
-            <stop offset="100%" stopColor="rgba(168, 85, 247, 0.3)" />
-          </linearGradient>
-          <linearGradient id="activeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(96, 165, 250, 0.8)" />
-            <stop offset="100%" stopColor="rgba(168, 85, 247, 0.8)" />
-          </linearGradient>
-        </defs>
+            {digit.char}
+          </div>
+        );
+      })}
 
-        {network.connections.map((conn) => {
-          const verticalOpacity = getVerticalOpacity((conn.y1 + conn.y2) / 2);
-          const opacity = conn.opacity * verticalOpacity;
+      <div 
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: `
+            linear-gradient(90deg, #3b82f6 1px, transparent 1px),
+            linear-gradient(0deg, #3b82f6 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
+        }}
+      />
 
-          return (
-            <line
-              key={conn.id}
-              x1={`${conn.x1}%`}
-              y1={`${conn.y1}%`}
-              x2={`${conn.x2}%`}
-              y2={`${conn.y2}%`}
-              stroke={
-                conn.opacity > 0.2
-                  ? "url(#activeGradient)"
-                  : "url(#connectionGradient)"
-              }
-              strokeWidth={conn.opacity > 0.2 ? "1" : "0.5"}
-              strokeOpacity={opacity}
-              className="transition-all duration-200"
-            />
-          );
-        })}
-      </svg>
-
-      {/* Nodes */}
-      <div className="absolute inset-0">
-        {network.nodes.map((node) => {
-          const verticalOpacity = getVerticalOpacity(node.y);
-          const glowSize = node.active ? 8 : 4;
-          const glowOpacity = node.active ? 0.4 : 0.1;
-          const nodeOpacity = node.currentOpacity * verticalOpacity;
-
-          return (
-            <div
-              key={node.id}
-              className="absolute rounded-full transition-all duration-200"
-              style={{
-                left: `${node.x}%`,
-                top: `${node.y}%`,
-                width: `${node.size}px`,
-                height: `${node.size}px`,
-                transform: "translate(-50%, -50%)",
-                opacity: nodeOpacity,
-                background: node.active
-                  ? "radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(96,165,250,0.8) 70%)"
-                  : "radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(96,165,250,0.3) 70%)",
-                boxShadow: node.active
-                  ? `0 0 ${glowSize}px rgba(96, 165, 250, ${glowOpacity * 2})`
-                  : `0 0 ${glowSize}px rgba(96, 165, 250, ${glowOpacity})`,
-              }}
-            />
-          );
-        })}
-      </div>
-
-      {/* Additional subtle particles */}
-      <div className="absolute inset-0">
-        {Array.from({ length: 15 }).map((_, i) => {
-          const x = Math.random() * 100;
-          const y = Math.random() * 100;
-          const verticalOpacity = getVerticalOpacity(y);
-
-          return (
-            <div
-              key={`particle-${i}`}
-              className="absolute rounded-full animate-pulse-slow"
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                width: "1px",
-                height: "1px",
-                background: "rgba(96, 165, 250, 0.2)",
-                opacity: verticalOpacity * 0.5,
-                animationDelay: `${i * 0.3}s`,
-              }}
-            />
-          );
-        })}
-      </div>
+      <style jsx>{`
+        @keyframes pulse {
+          0% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.05); }
+          100% { opacity: 0.3; transform: scale(1); }
+        }
+        @keyframes float {
+          0% { transform: translate(-50%, -50%) translateY(0px); }
+          100% { transform: translate(-50%, -50%) translateY(-20px); }
+        }
+      `}</style>
     </div>
   );
 };
 
-export default NodeNetwork;
+export default BinaryBackground;
