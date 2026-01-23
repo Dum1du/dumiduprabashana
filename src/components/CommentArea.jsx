@@ -45,71 +45,75 @@ function CommentArea({ scrollToSection, contactRef }) {
 
   // Terminal submit handler
   const handleTerminalSubmit = async (e) => {
-    e.preventDefault();
-    if (!terminalInput.trim()) return;
+  e.preventDefault();
+  if (!terminalInput.trim()) return;
 
-    const input = terminalInput.trim();
+  const input = terminalInput.trim();
 
-    // Add user input to history
-    setTerminalHistory((prev) => [...prev, { type: "user", text: `$ ${input}` }]);
+  // Add user input to history
+  setTerminalHistory((prev) => [...prev, { type: "user", text: `$ ${input}` }]);
 
-    // Commands
-    const cmd = input.toLowerCase();
-    if (["clear", "help", "projects", "skills", "contact"].includes(cmd)) {
-      if (cmd === "clear") setTerminalHistory([{ type: "system", text: "Terminal cleared." }]);
-      else if (cmd === "help") {
-        setTerminalHistory((prev) => [
-          ...prev,
-          { type: "system", text: "Available commands:" },
-          { type: "system", text: "  clear - Clear terminal" },
-          { type: "system", text: "  help - Show this help" },
-          { type: "system", text: "  projects - View my projects" },
-          { type: "system", text: "  skills - View my skills" },
-          { type: "system", text: "  contact - Get contact info" },
-        ]);
-      } else {
-        setTerminalHistory((prev) => [
-          ...prev,
-          { type: "system", text: `Opening ${cmd} section...` },
-        ]);
-        setTimeout(() => scrollToSection(cmd), 300);
-      }
-      setTerminalInput("");
-      return;
-    }
-
-    // Regular comment submission
-    try {
-      if (!user) {
-        const result = await signInWithPopup(auth, provider);
-        setUser(result.user);
-      }
-
-      const normalizedPhotoURL = user?.photoURL?.replace(/=s\d+-c/, "=s200") || null;
-
-      await addDoc(collection(db, "comments"), {
-        text: input,
-        name: user?.displayName || "Anonymous",
-        photo: normalizedPhotoURL,
-        uid: user?.uid,
-        createdAt: serverTimestamp(),
-      });
-
+  // Commands
+  const cmd = input.toLowerCase();
+  if (["clear", "help", "projects", "skills", "contact"].includes(cmd)) {
+    if (cmd === "clear") setTerminalHistory([{ type: "system", text: "Terminal cleared." }]);
+    else if (cmd === "help") {
       setTerminalHistory((prev) => [
         ...prev,
-        { type: "system", text: "Comment submitted successfully!" },
-        { type: "system", text: 'Type another message or use "help" for commands.' },
+        { type: "system", text: "Available commands:" },
+        { type: "system", text: "  clear - Clear terminal" },
+        { type: "system", text: "  help - Show this help" },
+        { type: "system", text: "  projects - View my projects" },
+        { type: "system", text: "  skills - View my skills" },
+        { type: "system", text: "  contact - Get contact info" },
       ]);
-    } catch (error) {
-      console.error(error);
+    } else {
       setTerminalHistory((prev) => [
         ...prev,
-        { type: "system", text: "Error submitting comment. Please try again." },
+        { type: "system", text: `Opening ${cmd} section...` },
       ]);
-    } finally {
-      setTerminalInput("");
+      setTimeout(() => scrollToSection(cmd), 300);
     }
-  };
+    setTerminalInput("");
+    return;
+  }
+
+  // Regular comment submission
+  try {
+    let currentUser = user;
+    
+    // If no user is signed in, sign them in
+    if (!currentUser) {
+      const result = await signInWithPopup(auth, provider);
+      setUser(result.user);
+      currentUser = result.user; // Use the user from the sign-in result
+    }
+
+    const normalizedPhotoURL = currentUser?.photoURL?.replace(/=s\d+-c/, "=s200") || null;
+
+    await addDoc(collection(db, "comments"), {
+      text: input,
+      name: currentUser?.displayName || "Anonymous",
+      photo: normalizedPhotoURL,
+      uid: currentUser?.uid, // This will now have a value
+      createdAt: serverTimestamp(),
+    });
+
+    setTerminalHistory((prev) => [
+      ...prev,
+      { type: "system", text: "Comment submitted successfully!" },
+      { type: "system", text: 'Type another message or use "help" for commands.' },
+    ]);
+  } catch (error) {
+    console.error(error);
+    setTerminalHistory((prev) => [
+      ...prev,
+      { type: "system", text: "Error submitting comment. Please try again." },
+    ]);
+  } finally {
+    setTerminalInput("");
+  }
+};
 
   return (
     <section ref={contactRef} className="py-12 md:py-20 px-4 sm:px-6">
