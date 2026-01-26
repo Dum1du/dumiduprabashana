@@ -37,7 +37,7 @@ function App() {
   };
 
   const downloadCV = () => {
-    const cvUrl = " https://drive.google.com/uc?export=download&id=1U4ZPx8DlEAnz0uYWI5HkYmlCASmi9BQv";
+    const cvUrl = " https://drive.google.com/uc?export=download&id=1w8fBa0w1uEkcyjPOIj8Swi1X17fOtpCM";
     const link = document.createElement("a");
     link.href = cvUrl;
     link.download = "Dumidu_Prabhasan_CV.pdf";
