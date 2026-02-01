@@ -123,7 +123,7 @@ export default function Hero({ heroRef, scrollToSection, downloadCV }) {
               transition={{ duration: 0.4, type: "spring", stiffness: 100 }}
               className="w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-2xl overflow-hidden border-4 border-gray-800 shadow-2xl relative group"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 group-hover:from-blue-500/30 group-hover:to-purple-500/30 transition-all duration-300 z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 group-hover:from-blue-500/30 group-hover:to-purple-500/20 transition-all duration-300 z-10"></div>
               <img
                 src={profilePic}
                 alt="Dumidu Prabashana"
