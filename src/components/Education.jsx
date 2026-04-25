@@ -40,13 +40,6 @@ export default function Education() {
               June 2023 - May 2027 (Expected)
             </span>
           </div>
-
-          <div className="flex items-center text-gray-400">
-            <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-blue-400" />
-            <span className="text-sm sm:text-base">
-              Colombo, Sri Lanka
-            </span>
-          </div>
         </div>
       </div>
     </motion.div>
