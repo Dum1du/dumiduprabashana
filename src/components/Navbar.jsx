@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Code, Home, FolderOpen, User, Mail, Download } from "lucide-react";
+import icon from "../assets/dp-Image.png";
 
 export default function Navbar({
   isNavOpen,
@@ -14,7 +15,7 @@ export default function Navbar({
           {/* Brand */}
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-              <Code className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+              <img className="h-4 w-4 sm:h-6 sm:w-6 text-white" src={icon} />
             </div>
             <span className="text-lg sm:text-xl font-bold">
               Dumidu Prabashana

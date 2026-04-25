@@ -1,5 +1,22 @@
 export const projects = [
   {
+    title: "SmartStore - POS & Inventory Management System",
+    description:
+      "Full-featured POS system supporting billing, inventory tracking, and product management.",
+    tech: ["C# (.NET / WPF)", "SQLite", "ASP.NET Core Web API", "SQL Server",],
+    github: "https://github.com/Dum1du/SmartStoreManager",
+    features: [
+      "Generate and save bills in PDF format",
+      "Product Management",
+      "View sales based analytics",
+      "Customize store details for automatic billing",
+    ],
+  
+    image:
+      "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=800&auto=format&fit=crop",
+    color: "from-purple-500 to-pink-500",
+  },
+  {
     title: "KineTown - Sinhala Subtitle Platform",
     description:
       "Full-stack web application for multilingual subtitle search, download, and translation with custom batch translation engine and real-time WebSocket updates.",
@@ -11,7 +28,8 @@ export const projects = [
       "Google Drive integration",
     ],
     image:
-      "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop",
+    
+      "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&auto=format&fit=crop",
     color: "from-purple-500 to-pink-500",
   },
   {
@@ -41,7 +59,8 @@ export const projects = [
       "Privacy-focused",
     ],
     image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop",
+   
+      "https://images.unsplash.com/photo-1461183479101-6c14cd5299c4?w=800&auto=format&fit=crop",
     color: "from-green-500 to-emerald-500",
   },
   {

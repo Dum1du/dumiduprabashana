@@ -1,5 +1,6 @@
 import React from "react";
 import { Mail, MessageCircle, Linkedin, Github, Code, ArrowUp } from "lucide-react";
+import icon from "../assets/dp-Image.png";
 
 const Footer = ({ scrollToSection }) => {
   const currentYear = new Date().getFullYear();
@@ -83,7 +84,7 @@ const Footer = ({ scrollToSection }) => {
           {/* Brand */}
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
-              <Code className="h-6 w-6 text-blue-400" />
+              <img className="h-6 w-6 text-blue-400" src={icon}/>
             </div>
             <div>
               <h3 className="text-xl font-bold text-white">Dumidu Prabashana</h3>
