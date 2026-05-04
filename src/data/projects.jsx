@@ -4,7 +4,7 @@ export const projects = [
     description:
       "Full-featured POS system supporting billing, inventory tracking, and product management.",
     tech: ["C# (.NET / WPF)", "SQLite", "ASP.NET Core Web API", "SQL Server",],
-    github: "https://github.com/Dum1du/SmartStoreManager",
+    github: "https://github.com/Dum1du/SmartStore-Desktop",
     features: [
       "Generate and save bills in PDF format",
       "Product Management",
