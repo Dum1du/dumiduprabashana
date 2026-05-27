@@ -36,9 +36,10 @@ function App() {
     setIsNavOpen(false);
   };
 
-
+  // https://drive.google.com/file/d/1Q75cGuS5eHY7UnOt1t7WTPGW37NHv54k/view?usp=sharing
   const downloadCV = () => {
-    const cvUrl = " https://drive.google.com/uc?export=download&id=121EvbLmKakGFSC4vDsxTBZlTzBAv0C4w";
+    const cvUrl =
+      " https://drive.google.com/uc?export=download&id=1Q75cGuS5eHY7UnOt1t7WTPGW37NHv54k";
     const link = document.createElement("a");
     link.href = cvUrl;
     link.download = "Dumidu_Prabhasan_CV.pdf";
@@ -56,7 +57,11 @@ function App() {
         downloadCV={downloadCV}
       />
 
-      <Hero heroRef={heroRef} scrollToSection={scrollToSection} downloadCV={downloadCV} />
+      <Hero
+        heroRef={heroRef}
+        scrollToSection={scrollToSection}
+        downloadCV={downloadCV}
+      />
 
       <Skills skillsRef={skillsRef} />
 
